@@ -3,8 +3,8 @@ import { Alert, Button, Col, Form, Input, Row, Select, Typography } from 'antd'
 import '../../../components/auth/AuthForm.css'
 import './RegisterForm.css'
 
-// Password validation regex: at least 8 chars, 1 lowercase letter, 1 uppercase letter, 1 special character
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/
+// Password validation regex: at least 8 chars, 1 lowercase, 1 uppercase, 1 digit, 1 special character
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"|,.<>\/?]).{8,}$/
 
 const validatePassword = (password) => {
   if (!password) return false
@@ -48,8 +48,8 @@ export default function RegisterForm({ loading, sendingCode, error, info, onSubm
 
   const handleSendCode = async () => {
     try {
-      const { phoneNumber } = await form.validateFields(['phoneNumber'])
-      await onSendCode({ phoneNumber })
+      const { email, phoneNumber } = await form.validateFields(['email', 'phoneNumber'])
+      await onSendCode({ email, phoneNumber })
     } catch {
       return
     }
@@ -127,7 +127,10 @@ export default function RegisterForm({ loading, sendingCode, error, info, onSubm
                     if (!/[a-z]/.test(value)) {
                       return Promise.reject(new Error('Password must contain at least one lowercase letter.'))
                     }
-                    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value)) {
+                    if (!/[0-9]/.test(value)) {
+                      return Promise.reject(new Error('Password must contain at least one number.'))
+                    }
+                    if (!/[!@#$%^&*()_+\-=\[\]{};':"|,.<>\/?]/.test(value)) {
                       return Promise.reject(new Error('Password must contain at least one special character.'))
                     }
                     return Promise.resolve()
@@ -213,7 +216,9 @@ export default function RegisterForm({ loading, sendingCode, error, info, onSubm
               ]}
             >
               <Input.Group compact>
-                <Input size="large" placeholder="Enter code" className="register-card__verification-input" />
+                <Form.Item name="verificationCode" noStyle>
+                  <Input size="large" placeholder="Enter code" className="register-card__verification-input" />
+                </Form.Item>
                 <Button
                   type="primary"
                   size="large"

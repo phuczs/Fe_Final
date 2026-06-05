@@ -11,6 +11,7 @@ import HomePage from './pages/Home/HomePage'
 import AccountPage from './pages/Account/AccountPage'
 import UserActivityReportPage from './pages/Reports/UserActivityReport/UserActivityReportPage'
 import TwoFactorAuthenticationPage from './pages/Settings/TwoFactorAuthentication/TwoFactorAuthenticationPage'
+import EmailWhitelistPage from './pages/Settings/EmailWhitelist/EmailWhitelistPage'
 import VerifyMfaPage from './pages/VerifyMfa/VerifyMfaPage'
 import ProtectedRoute from './routes/ProtectedRoute'
 
@@ -84,6 +85,11 @@ function App() {
         <Route
           path="/settings/two-factor-authentication"
           element={<TwoFactorAuthenticationPage />}
+        />
+
+        <Route
+          path="/settings/email-whitelist"
+          element={<EmailWhitelistPage />}
         />
       </Route>
 

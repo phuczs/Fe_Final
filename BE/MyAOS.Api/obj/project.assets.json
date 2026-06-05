@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 3,
   "targets": {
     "net10.0": {
       "Azure.Core/1.47.1": {
@@ -1998,40 +1998,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\c-peter.dao\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Phuc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\c-peter.dao\\source\\repos\\final-assessment\\MyAOS\\MyAOS.Api\\MyAOS.Api.csproj",
+      "projectUniqueName": "C:\\Users\\Phuc\\OneDrive\\Desktop\\Fe_Final\\BE\\MyAOS.Api\\MyAOS.Api.csproj",
       "projectName": "MyAOS.Api",
-      "projectPath": "C:\\Users\\c-peter.dao\\source\\repos\\final-assessment\\MyAOS\\MyAOS.Api\\MyAOS.Api.csproj",
-      "packagesPath": "C:\\Users\\c-peter.dao\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\c-peter.dao\\source\\repos\\final-assessment\\MyAOS\\MyAOS.Api\\obj\\",
+      "projectPath": "C:\\Users\\Phuc\\OneDrive\\Desktop\\Fe_Final\\BE\\MyAOS.Api\\MyAOS.Api.csproj",
+      "packagesPath": "C:\\Users\\Phuc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Phuc\\OneDrive\\Desktop\\Fe_Final\\BE\\MyAOS.Api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\c-peter.dao\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Phuc\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\c-peter.dao\\source\\repos\\final-assessment\\MyAOS\\MyAOS.Service\\MyAOS.Service.csproj": {
-              "projectPath": "C:\\Users\\c-peter.dao\\source\\repos\\final-assessment\\MyAOS\\MyAOS.Service\\MyAOS.Service.csproj"
+            "C:\\Users\\Phuc\\OneDrive\\Desktop\\Fe_Final\\BE\\MyAOS.Service\\MyAOS.Service.csproj": {
+              "projectPath": "C:\\Users\\Phuc\\OneDrive\\Desktop\\Fe_Final\\BE\\MyAOS.Service\\MyAOS.Service.csproj"
             }
           }
         }
@@ -2046,11 +2038,10 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "FluentValidation.AspNetCore": {
@@ -2093,7 +2084,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

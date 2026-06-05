@@ -4,6 +4,7 @@ import {
   KeyOutlined,
   SettingOutlined,
   BarChartOutlined,
+  MailOutlined,
 } from '@ant-design/icons'
 
 export const navItems = [
@@ -26,6 +27,11 @@ export const navItems = [
     label: 'Settings',
     path: '/settings/two-factor-authentication',
     icon: <SettingOutlined />,
+  },
+  {
+    label: 'Email Whitelist',
+    path: '/settings/email-whitelist',
+    icon: <MailOutlined />,
   },
   {
     label: 'Reports',

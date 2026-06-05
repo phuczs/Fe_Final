@@ -17,6 +17,13 @@ export const authApi = {
     )
   },
 
+  sendVerificationCode(payload) {
+    return api.post(
+      '/api/auth/register/verification-code',
+      payload,
+    )
+  },
+
   refresh() {
     return api.post(
       '/api/auth/refresh',

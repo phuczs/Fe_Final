@@ -1,0 +1,152 @@
+/* =========================================================
+   Email Whitelist Page — EmailWhitelistPage.css
+   ========================================================= */
+
+/* ── root ─────────────────────────────────────────────── */
+.ewl-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── header ───────────────────────────────────────────── */
+.ewl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 28px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  color: #fff;
+}
+
+.ewl-header__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ewl-header__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.ewl-header__subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ewl-header__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.ewl-stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.ewl-stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── toolbar ──────────────────────────────────────────── */
+.ewl-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.ewl-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.ewl-btn-primary:hover {
+  opacity: 0.88 !important;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+
+.ewl-search {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+/* ── table wrapper ────────────────────────────────────── */
+.ewl-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ewl-page .ant-table td {
+  white-space: nowrap;
+}
+
+/* ── email cell ───────────────────────────────────────── */
+.ewl-email-icon {
+  color: #667eea;
+  font-size: 14px;
+}
+
+.ewl-email-text {
+  font-weight: 500;
+  color: #1d2939;
+}
+
+/* ── action buttons ───────────────────────────────────── */
+.ewl-action-btn {
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.ewl-action-btn--edit {
+  color: #667eea !important;
+}
+
+.ewl-action-btn--edit:hover {
+  background: rgba(102, 126, 234, 0.1) !important;
+  color: #4f46e5 !important;
+}
+
+.ewl-action-btn--delete {
+  color: #f43f5e !important;
+}
+
+.ewl-action-btn--delete:hover {
+  background: rgba(244, 63, 94, 0.1) !important;
+  color: #e11d48 !important;
+}
+
+/* ── form label helper ────────────────────────────────── */
+.ewl-form-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}

@@ -1,20 +1,11 @@
 import { useState } from 'react'
 import { authApi } from '../api/authApi'
 
-function delay(duration) {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, duration)
-  })
-}
-
-function createVerificationCode() {
-  return String(Math.floor(100000 + Math.random() * 900000))
-}
-
 const validatePassword = (password) => {
   if (!password || password.length < 8) return false
   if (!/[A-Z]/.test(password)) return false
   if (!/[a-z]/.test(password)) return false
+  if (!/[0-9]/.test(password)) return false
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return false
   return true
 }
@@ -24,9 +15,8 @@ export function useRegister() {
   const [sendingCode, setSendingCode] = useState(false)
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
-  const [verificationCode, setVerificationCode] = useState('')
 
-  const sendVerificationCode = async ({ phoneNumber }) => {
+  const sendVerificationCode = async ({ email, phoneNumber }) => {
     setSendingCode(true)
     setError('')
     setInfo('')
@@ -35,20 +25,23 @@ export function useRegister() {
       if (!phoneNumber) {
         throw new Error('Please enter your phone number before requesting a verification code.')
       }
+      if (!email) {
+        throw new Error('Please enter your email address before requesting a verification code.')
+      }
 
-      await delay(700)
+      await authApi.sendVerificationCode({
+        emailAddress: email,
+        phoneNumber: phoneNumber,
+      })
 
-      // const nextCode = createVerificationCode()
-      const nextCode = '123456' // For demo purposes, use a fixed code
-      setVerificationCode(nextCode)
-      setInfo(`Verification code sent. Demo code: ${nextCode}`)
-
-      return nextCode
+      setInfo('Verification code sent. Please check your email or phone.')
     } catch (requestError) {
       setError(
-        requestError instanceof Error
+        requestError?.response?.data?.message ||
+        requestError?.response?.data?.title ||
+        (requestError instanceof Error
           ? requestError.message
-          : 'Cannot send verification code at this time.',
+          : 'Cannot send verification code at this time.'),
       )
       throw requestError
     } finally {
