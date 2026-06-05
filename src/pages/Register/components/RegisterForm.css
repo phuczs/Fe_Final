@@ -1,0 +1,142 @@
+.register-card {
+  font-size: 0.94rem;
+}
+
+.register-card .ant-form-item-label > label {
+  font-size: 0.9rem;
+}
+
+.register-card .ant-input,
+.register-card .ant-input-affix-wrapper,
+.register-card .ant-select-selector,
+.register-card .ant-btn {
+  font-size: 0.92rem;
+}
+
+.register-card .ant-input,
+.register-card .ant-input-affix-wrapper,
+.register-card .ant-select-selector {
+  min-height: 42px;
+}
+
+.register-card .ant-input-affix-wrapper {
+  align-items: center;
+  padding-block: 4px;
+}
+
+.register-card .ant-form-item-explain,
+.register-card .ant-form-item-extra {
+  font-size: 0.82rem;
+}
+
+.register-card__country-code {
+  min-width: 96px;
+}
+
+.register-card__phone-input {
+  width: calc(100% - 96px);
+  min-width: 0;
+}
+
+.register-card__country-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.register-card__country-code .ant-select-selector {
+  display: flex;
+  align-items: center;
+  height: 42px !important;
+  min-height: 42px;
+}
+
+.register-card__country-code .ant-select-selection-item {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.register-card__phone-input.ant-input-affix-wrapper {
+  height: 42px;
+  min-height: 42px;
+}
+
+.register-card__verification-input {
+  min-width: 0;
+  flex: 1;
+}
+
+.register-card__code-button {
+  flex: 0 0 170px;
+  height: 42px;
+  width: 170px;
+  min-width: 0;
+  padding-inline: 12px;
+  white-space: nowrap;
+}
+
+.register-card__contact-row .ant-input-group {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.register-card__verification-field .ant-input-group {
+  align-items: stretch;
+  display: flex;
+  width: 100%;
+}
+
+.register-card__verification-field .register-card__verification-input {
+  width: auto;
+}
+
+.register-card__contact-row .ant-input,
+.register-card__contact-row .ant-input-affix-wrapper,
+.register-card__contact-row .ant-select-selector,
+.register-card__contact-row .ant-btn {
+  height: 42px;
+}
+
+.register-card__info,
+.register-card__error {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 960px) {
+  .register-card {
+    padding: 20px;
+  }
+
+  .register-card__code-button {
+    flex-basis: 170px;
+    min-width: 170px;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .register-card__country-code {
+    width: 74px;
+  }
+
+  .register-card__phone-input {
+    width: calc(100% - 74px);
+    min-width: 0;
+  }
+
+  .register-card__code-button {
+    flex-basis: 170px;
+    width: 170px;
+    min-width: 0;
+    padding-inline: 8px;
+    font-size: 0.76rem;
+  }
+
+  .register-card .ant-input-group {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}

@@ -1,0 +1,63 @@
+.column-popup {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  position: absolute;
+  z-index: 1001;
+}
+
+/* SEARCH */
+.column-popup__search {
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* LIST AREA */
+.column-popup__list {
+  max-height: 220px;
+  overflow-y: auto;
+flex: 1;
+  padding: 8px 0;
+}
+
+/* ITEM */
+.column-popup__item {
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+}
+
+/* hover giống UI bạn gửi */
+.column-popup__item:hover {
+  background: #f5f7fb;
+}
+
+/* SELECT ALL */
+.column-popup__select-all {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+}
+
+/* FOOTER */
+.column-popup__footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 8px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+}
+
+.column-popup__footer-right {
+  display: flex;
+  gap: 8px;
+}

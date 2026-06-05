@@ -1,0 +1,13 @@
+.filter-collapse .ant-collapse-item {
+  margin-bottom: 12px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+/* header đẹp hơn */
+.filter-collapse .ant-collapse-header {
+  font-weight: 500;
+}

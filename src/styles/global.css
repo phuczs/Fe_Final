@@ -1,0 +1,44 @@
+:root {
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1f2a44;
+  background:
+    radial-gradient(circle at top left, rgba(87, 121, 255, 0.25), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(57, 220, 193, 0.2), transparent 28%),
+    linear-gradient(135deg, #dce6ff 0%, #eff3ff 44%, #e6ecff 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}

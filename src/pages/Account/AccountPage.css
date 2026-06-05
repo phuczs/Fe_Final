@@ -1,0 +1,70 @@
+
+/* ROOT */
+.account-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  width: 100%;
+  min-width: 0; 
+  overflow: hidden; 
+}
+
+/* TOOLBAR */
+.account-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 12px;
+  width: 100%;
+
+  flex-wrap: nowrap; 
+}
+
+/* LEFT */
+.account-toolbar__left {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* RIGHT */
+.account-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  white-space: nowrap;
+}
+
+/* INPUT FIX */
+.account-toolbar__right .ant-input {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+/* TABLE WRAPPER */
+.account-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* TABLE NO-WRAP */
+.account-page .ant-table td {
+  white-space: nowrap;
+}
+
+/* GLOBAL FIX */
+html,
+body,
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}

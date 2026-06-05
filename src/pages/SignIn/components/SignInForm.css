@@ -1,0 +1,59 @@
+.sign-in-card__provider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  font-weight: 700;
+  border-radius: 14px;
+  border-color: #d7dff5;
+  color: #16223f;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(46, 68, 121, 0.1);
+}
+
+.sign-in-card__divider {
+  margin: 18px 0;
+  color: #6c7894;
+  font-size: 0.95rem;
+}
+
+.sign-in-card__error {
+  margin-bottom: 16px;
+}
+
+.sign-in-card__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.sign-in-card__remember {
+  margin-bottom: 0;
+}
+
+.sign-in-card__meta-row .ant-form-item {
+  margin-bottom: 0;
+}
+
+.sign-in-card .ant-btn-primary {
+  height: 52px;
+  border-radius: 14px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667cff 0%, #4d5fd9 100%);
+  box-shadow: 0 16px 24px rgba(72, 90, 205, 0.22);
+}
+
+@media (max-width: 640px) {
+  .sign-in-card__meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sign-in-card .ant-btn-primary,
+  .sign-in-card__provider {
+    height: 48px;
+  }
+}

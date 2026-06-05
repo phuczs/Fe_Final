@@ -1,0 +1,15 @@
+.verify-mfa-card {
+  width: 100%;
+}
+
+.verify-mfa__timer {
+  margin-bottom: 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.verify-mfa__timer strong {
+  color: #1677ff;
+  font-weight: 600;
+}
