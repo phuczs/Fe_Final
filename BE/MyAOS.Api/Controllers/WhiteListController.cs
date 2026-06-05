@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyAOS.Domain.Dto;
 using MyAOS.Service;
@@ -139,6 +139,38 @@ namespace MyAOS.Api.Controllers
                 role,
                 actorEmail,
                 actorUserId,
+                request,
+                ct);
+
+            return Ok(result);
+        }
+
+        // POST /api/whitelist/emails/send — send an email to all whitelisted addresses
+        [HttpPost("emails/send")]
+        [Authorize]
+        public async Task<IActionResult> SendEmailToWhitelist(
+    [FromBody] SendWhitelistEmailRequest request,
+    CancellationToken ct)
+        {
+            var tenantIdValue =
+                User.FindFirst("TenantId")?.Value
+                ?? User.FindFirst("tenantId")?.Value;
+
+            if (!Guid.TryParse(tenantIdValue, out var currentTenantId))
+            {
+                return Unauthorized(new { message = "Invalid token tenant." });
+            }
+
+            var role =
+                User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
+                ?? User.FindFirst("role")?.Value
+                ?? User.FindFirst("Role")?.Value
+                ?? User.Claims.FirstOrDefault(c => c.Type.EndsWith("/role"))?.Value
+                ?? string.Empty;
+
+            var result = await _whitelistService.SendEmailToWhitelistAsync(
+                currentTenantId,
+                role,
                 request,
                 ct);
 

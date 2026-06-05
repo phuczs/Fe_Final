@@ -2,6 +2,7 @@ import {
   Button,
   Input,
   Space,
+  Switch,
   Table,
   Tag,
   Tooltip,
@@ -34,6 +35,8 @@ export default function EmailWhitelistPage() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+  const [whitelistEnabled, setWhitelistEnabled] = useState(false)
+  const [toggleLoading, setToggleLoading] = useState(false)
 
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [editTarget, setEditTarget] = useState(null)
@@ -54,15 +57,22 @@ export default function EmailWhitelistPage() {
 
       const response = await emailWhitelistApi.list(params)
 
-      // Support both paginated { items, totalCount } and plain array responses
+      // Backend returns WhitelistSettingsDto: { emails: [...], emailWhitelistEnabled, tenantId }
       const raw = response.data
       const items = Array.isArray(raw)
         ? raw
-        : Array.isArray(raw?.items)
-          ? raw.items
-          : []
+        : Array.isArray(raw?.emails)
+          ? raw.emails
+          : Array.isArray(raw?.items)
+            ? raw.items
+            : []
 
       const total = raw?.totalCount ?? items.length
+
+      // Sync toggle state with server
+      if (typeof raw?.emailWhitelistEnabled === 'boolean') {
+        setWhitelistEnabled(raw.emailWhitelistEnabled)
+      }
 
       setData(
         items.map((item, idx) => ({
@@ -102,6 +112,28 @@ export default function EmailWhitelistPage() {
 
   const handleRefresh = () => {
     loadData(pagination.current, pagination.pageSize, searchValue)
+  }
+
+  // ─── toggle whitelist ─────────────────────────────────────────────────────
+  const handleToggle = async (checked) => {
+    setToggleLoading(true)
+    try {
+      await emailWhitelistApi.toggleWhitelist({ Enabled: checked })
+      setWhitelistEnabled(checked)
+      message.success(
+        checked
+          ? 'Email whitelist enabled. Only listed emails will receive notifications.'
+          : 'Email whitelist disabled. All users can receive notifications.',
+      )
+    } catch (err) {
+      message.error(
+        err.response?.data?.message ||
+          err.response?.data?.title ||
+          'Failed to update whitelist setting.',
+      )
+    } finally {
+      setToggleLoading(false)
+    }
   }
 
   // ─── columns ──────────────────────────────────────────────────────────────
@@ -185,6 +217,34 @@ export default function EmailWhitelistPage() {
         <div className="ewl-header__stat">
           <span className="ewl-stat-value">{pagination.total}</span>
           <span className="ewl-stat-label">whitelisted emails</span>
+        </div>
+      </div>
+
+      {/* ── whitelist toggle card ────────────────────────────────── */}
+      <div className="ewl-toggle-card">
+        <div className="ewl-toggle-card__left">
+          <div className="ewl-toggle-card__icon">🔒</div>
+          <div className="ewl-toggle-card__text">
+            <span className="ewl-toggle-card__label">Restrict Email Notifications</span>
+            <span className="ewl-toggle-card__desc">
+              By default, email notifications from MOS can be sent to anyone. Turn on this
+              switch to block notifications to all users <strong>except</strong> those in the
+              allow list below.
+            </span>
+          </div>
+        </div>
+        <div className="ewl-toggle-card__right">
+          <Switch
+            checked={whitelistEnabled}
+            loading={toggleLoading}
+            onChange={handleToggle}
+            checkedChildren="ON"
+            unCheckedChildren="OFF"
+            className="ewl-toggle-switch"
+          />
+          <span className={`ewl-toggle-status ${whitelistEnabled ? 'ewl-toggle-status--on' : 'ewl-toggle-status--off'}`}>
+            {whitelistEnabled ? 'Whitelist Active' : 'Whitelist Inactive'}
+          </span>
         </div>
       </div>
 

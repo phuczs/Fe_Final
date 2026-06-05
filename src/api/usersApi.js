@@ -21,4 +21,19 @@ export const usersApi = {
       data: payload,
     })
   },
+
+  // GET /api/users/me — fetch the current logged-in user's profile
+  getMyProfile() {
+    return api.get('/api/users/me')
+  },
+
+  // PUT /api/users/me — update display name, sex, phone, staffId
+  updateMyProfile(payload) {
+    return api.put('/api/users/me', payload)
+  },
+
+  // POST /api/users/me/reset-password — change password
+  resetPassword(payload) {
+    return api.post('/api/users/me/reset-password', payload)
+  },
 }

@@ -14,8 +14,7 @@ export default function AddEmailModal({ open, onClose, onSuccess }) {
       setLoading(true)
 
       await emailWhitelistApi.create({
-        email: values.email.trim(),
-        note: values.note?.trim() ?? '',
+        Emails: [values.email.trim()],
       })
 
       message.success(`"${values.email.trim()}" added to whitelist.`)

@@ -1,4 +1,4 @@
-﻿using MyAOS.Domain.Dto;
+using MyAOS.Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +31,12 @@ namespace MyAOS.Service
     string actorEmail,
     Guid? actorUserId,
     Guid whitelistEmailId,
+    CancellationToken ct = default);
+
+        Task<SendWhitelistEmailResponse> SendEmailToWhitelistAsync(
+    Guid currentTenantId,
+    string currentUserRole,
+    SendWhitelistEmailRequest request,
     CancellationToken ct = default);
     }
 }

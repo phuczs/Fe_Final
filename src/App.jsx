@@ -9,6 +9,7 @@ import RegisterPage from './pages/Register/RegisterPage'
 
 import HomePage from './pages/Home/HomePage'
 import AccountPage from './pages/Account/AccountPage'
+import ProfilePage from './pages/Account/ProfilePage'
 import UserActivityReportPage from './pages/Reports/UserActivityReport/UserActivityReportPage'
 import TwoFactorAuthenticationPage from './pages/Settings/TwoFactorAuthentication/TwoFactorAuthenticationPage'
 import EmailWhitelistPage from './pages/Settings/EmailWhitelist/EmailWhitelistPage'
@@ -90,6 +91,11 @@ function App() {
         <Route
           path="/settings/email-whitelist"
           element={<EmailWhitelistPage />}
+        />
+
+        <Route
+          path="/profile"
+          element={<ProfilePage />}
         />
       </Route>
 

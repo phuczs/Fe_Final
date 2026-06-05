@@ -1,4 +1,4 @@
-﻿using MyAOS.Domain.Dto;
+using MyAOS.Domain.Dto;
 using MyAOS.Repository;
 using System;
 using System.Collections.Generic;
@@ -269,6 +269,55 @@ namespace MyAOS.Service
                 string.Equals(role, "SystemAdmin", StringComparison.OrdinalIgnoreCase) ||
                 role == "1" ||
                 role == "2";
+        }
+
+        public async Task<SendWhitelistEmailResponse> SendEmailToWhitelistAsync(
+            Guid currentTenantId,
+            string currentUserRole,
+            SendWhitelistEmailRequest request,
+            CancellationToken ct = default)
+        {
+            if (!IsAdminRole(currentUserRole))
+            {
+                throw new UnauthorizedAccessException("Admin permission is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Subject))
+            {
+                throw new ArgumentException("Subject is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                throw new ArgumentException("Body is required.");
+            }
+
+            var whitelistEmails = await _emailWhitelistRepo.GetByTenantIdAsync(currentTenantId, ct);
+
+            if (whitelistEmails == null || !whitelistEmails.Any())
+            {
+                return new SendWhitelistEmailResponse { SentCount = 0 };
+            }
+
+            var response = new SendWhitelistEmailResponse();
+
+            foreach (var entry in whitelistEmails)
+            {
+                try
+                {
+                    await _emailSender.SendAsync(entry.Email, request.Subject, request.Body, ct);
+                    response.SentTo.Add(entry.Email);
+                }
+                catch (Exception ex)
+                {
+                    response.FailedTo.Add(entry.Email);
+                    response.FailedDetails[entry.Email] = ex.Message;
+                }
+            }
+
+            response.SentCount = response.SentTo.Count;
+
+            return response;
         }
     }
 }

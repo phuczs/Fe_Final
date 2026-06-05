@@ -150,3 +150,86 @@
   color: #6b7280;
   margin-top: 4px;
 }
+
+/* ── whitelist toggle card ────────────────────────────── */
+.ewl-toggle-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 28px;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.ewl-toggle-card:hover {
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+}
+
+.ewl-toggle-card__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ewl-toggle-card__icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ewl-toggle-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ewl-toggle-card__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d2939;
+  letter-spacing: -0.1px;
+}
+
+.ewl-toggle-card__desc {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.55;
+}
+
+.ewl-toggle-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ewl-toggle-switch.ant-switch-checked {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.ewl-toggle-status {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.ewl-toggle-status--on {
+  background: rgba(102, 126, 234, 0.12);
+  color: #5b5ef4;
+}
+
+.ewl-toggle-status--off {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6b7280;
+}

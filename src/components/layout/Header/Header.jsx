@@ -92,11 +92,21 @@ export default function Header() {
                   Profile
                 </button>
 
-                <button>
+                <button
+                  onClick={() => {
+                    setOpen(false)
+                    navigate('/profile')
+                  }}
+                >
                   Account Settings
                 </button>
 
-                <button>
+                <button
+                  onClick={() => {
+                    setOpen(false)
+                    navigate('/profile')
+                  }}
+                >
                   Change Password
                 </button>
 
