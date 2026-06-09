@@ -1,8 +1,8 @@
 import {
+  Alert,
   Card,
-  Checkbox,
   Form,
-  Input,
+  Skeleton,
   Switch,
   Typography,
 } from 'antd'
@@ -10,20 +10,49 @@ import {
 import PrimaryButton from '../../../../components/common/PrimaryButton'
 import SecondaryButton from '../../../../components/common/SecondaryButton'
 
+import { useToggleMyMfa } from '../../../../hooks/useToggleMyMfa'
+
 const { Paragraph } = Typography
 
 export default function TwoFactorAuthenticationForm() {
   const [form] = Form.useForm()
+
+  const {
+    mfaEnabled,
+    fetching,
+    loading,
+    error,
+    success,
+    submitToggle,
+  } = useToggleMyMfa()
+
+  const handleFinish = async (values) => {
+    try {
+      await submitToggle(values.enabled)
+    } catch {
+      //
+    }
+  }
+
+  const handleCancel = () => {
+    form.setFieldsValue({ enabled: mfaEnabled })
+  }
+
+  if (fetching) {
+    return (
+      <Card title="Two-factor authentication">
+        <Skeleton active />
+      </Card>
+    )
+  }
 
   return (
     <Card title="Two-factor authentication">
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          enabled: true,
-          methods: ['email'],
-        }}
+        initialValues={{ enabled: mfaEnabled }}
+        onFinish={handleFinish}
       >
         <Form.Item
           name="enabled"
@@ -36,36 +65,23 @@ export default function TwoFactorAuthenticationForm() {
           Two-Factor Authentication (2FA) is a robust identity and access management (IAM) security method designed to add an extra layer of defense to your account. It requires users to provide two distinct forms of identification before gaining access to secure resources and data. In addition to standard user credentials (username and password), the system automatically generates a time-sensitive, 6-digit verification code that is sent directly to the user. This one-time passcode acts as a dynamic security key, ensuring that even if your password is compromised, unauthorized access remains blocked.
         </Paragraph>
 
-        <Form.Item
-          name="methods"
-          label="Verification methods"
-        >
-          <Checkbox.Group>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-              }}
-            >
-              <Checkbox value="email">
-                Email
-              </Checkbox>
+        {error && (
+          <Alert
+            type="error"
+            message={error}
+            showIcon
+            style={{ marginBottom: 16 }}
+          />
+        )}
 
-              <Input
-                placeholder="Enter email / user email address"
-              />
-
-              <Checkbox value="sms">
-                SMS
-              </Checkbox>
-
-              <Input
-                placeholder="Enter mobile phone number"
-              />
-            </div>
-          </Checkbox.Group>
-        </Form.Item>
+        {success && (
+          <Alert
+            type="success"
+            message="MFA settings updated successfully."
+            showIcon
+            style={{ marginBottom: 16 }}
+          />
+        )}
 
         <div
           style={{
@@ -74,11 +90,17 @@ export default function TwoFactorAuthenticationForm() {
             gap: 8,
           }}
         >
-          <SecondaryButton>
+          <SecondaryButton
+            onClick={handleCancel}
+            disabled={loading}
+          >
             Cancel
           </SecondaryButton>
 
-          <PrimaryButton>
+          <PrimaryButton
+            htmlType="submit"
+            loading={loading}
+          >
             Save
           </PrimaryButton>
         </div>

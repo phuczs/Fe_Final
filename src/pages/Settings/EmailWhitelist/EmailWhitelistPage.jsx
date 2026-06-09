@@ -15,6 +15,7 @@ import {
   DeleteOutlined,
   MailOutlined,
   ReloadOutlined,
+  SendOutlined,
 } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 
@@ -22,6 +23,7 @@ import { emailWhitelistApi } from '../../../api/emailWhitelistApi'
 import AddEmailModal from './components/AddEmailModal'
 import EditEmailModal from './components/EditEmailModal'
 import DeleteEmailModal from './components/DeleteEmailModal'
+import SendEmailModal from './components/SendEmailModal'
 import './EmailWhitelistPage.css'
 
 function formatDateTime(value) {
@@ -39,6 +41,7 @@ export default function EmailWhitelistPage() {
   const [toggleLoading, setToggleLoading] = useState(false)
 
   const [isAddOpen, setIsAddOpen] = useState(false)
+  const [isSendOpen, setIsSendOpen] = useState(false)
   const [editTarget, setEditTarget] = useState(null)
   const [deleteTarget, setDeleteTarget] = useState(null)
 
@@ -260,6 +263,13 @@ export default function EmailWhitelistPage() {
             Add Email
           </Button>
 
+          <Button
+            icon={<SendOutlined />}
+            onClick={() => setIsSendOpen(true)}
+          >
+            Send Message
+          </Button>
+
           <Tooltip title="Refresh">
             <Button
               icon={<ReloadOutlined />}
@@ -300,6 +310,11 @@ export default function EmailWhitelistPage() {
       </div>
 
       {/* ── modals ──────────────────────────────────────────────────── */}
+      <SendEmailModal
+        open={isSendOpen}
+        onClose={() => setIsSendOpen(false)}
+      />
+
       <AddEmailModal
         open={isAddOpen}
         onClose={() => setIsAddOpen(false)}

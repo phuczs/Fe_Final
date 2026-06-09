@@ -26,6 +26,8 @@ import DeleteUsersModal from '../../components/common/DeleteUsersModal'
 import AddUserDrawer from './components/drawers/AddUserDrawer'
 import FilterDrawer from './components/drawers/FilterDrawer'
 import ColumnSettingsPopup from './components/settings/ColumnSettingsPopup'
+import AssignProductsDrawer from './components/drawers/AssignProductsDrawer'
+import { PRODUCT_LABEL_MAP, PRODUCT_TAG_COLORS } from '../../constants/products'
 import './AccountPage.css'
 
 const roleLabels = {
@@ -68,12 +70,6 @@ function formatDateTime(value) {
   return date.toLocaleString()
 }
 
-function formatProducts(productIds = []) {
-  if (!Array.isArray(productIds) || productIds.length === 0) return '-'
-
-  return productIds.join(', ')
-}
-
 function normalizeText(value) {
   if (value === null || value === undefined || value === '') return '-'
 
@@ -93,7 +89,7 @@ function mapUsersToRows(items = []) {
     mobilePhone: normalizeText(user.mobilePhone),
     role: roleLabels[user.role] || `Role ${user.role ?? ''}`.trim(),
     signInMethod: signInMethodLabels[user.signInMethod] || `Method ${user.signInMethod ?? ''}`.trim(),
-    productIds: formatProducts(user.productIds),
+    productIds: Array.isArray(user.productIds) ? user.productIds : [],
     mfaEnabled: user.mfaEnabled ? 'Yes' : 'No',
     status: statusLabels[user.status] || `Status ${user.status ?? ''}`.trim(),
     lastLoginAt: formatDateTime(user.lastLoginAt),
@@ -164,9 +160,24 @@ const columns = [
     key: 'signInMethod',
   },
   {
-    title: 'Product IDs',
+    title: 'Assigned Products',
     dataIndex: 'productIds',
     key: 'productIds',
+    width: 280,
+    render: (productIds) => {
+      if (!Array.isArray(productIds) || productIds.length === 0) {
+        return <Tag color="default">None</Tag>
+      }
+      return (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {productIds.map((id) => (
+            <Tag key={id} color={PRODUCT_TAG_COLORS[id] || 'default'}>
+              {PRODUCT_LABEL_MAP[id] || `Product ${id}`}
+            </Tag>
+          ))}
+        </div>
+      )
+    },
   },
   {
     title: 'MFA Enabled',
@@ -211,6 +222,7 @@ export default function AccountPage() {
   const [loadingUsers, setLoadingUsers] = useState(false)
   const [usersError, setUsersError] = useState('')
   const [data, setData] = useState([])
+  const [rawUsers, setRawUsers] = useState([])  // raw API items for lookups
   const [filters, setFilters] = useState({})
   const [pagination, setPagination] = useState({
     current: 1,
@@ -223,6 +235,7 @@ export default function AccountPage() {
   const [isActivateModalOpen, setIsActivateModalOpen] = useState(false)
   const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isAssignProductsOpen, setIsAssignProductsOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
   const loadUsers = async (filterParams = {}, pageNum = 1, pageSize = 10) => {
@@ -237,7 +250,9 @@ export default function AccountPage() {
       }
 
       const response = await usersApi.list(params)
-      setData(mapUsersToRows(response.data?.items || []))
+      const items = response.data?.items || []
+      setRawUsers(items)
+      setData(mapUsersToRows(items))
       setPagination({
         current: response.data?.page || pageNum,
         pageSize: response.data?.pageSize || pageSize,
@@ -278,12 +293,23 @@ export default function AccountPage() {
     if (newFilters.Status) params.Status = newFilters.Status
     if (newFilters.SignInMethod) params.SignInMethod = newFilters.SignInMethod
     if (newFilters.ProductId) params.ProductId = newFilters.ProductId
-    
+
     loadUsers(params, 1, pagination.pageSize)
   }
 
   useEffect(() => {
     loadUsers()
+
+    // Debug: fetch and print database products to console
+    import('../../api/productsApi').then(({ productsApi }) => {
+      productsApi.getAllActive()
+        .then(res => {
+          console.log('DEBUG [DB Products]:', res.data)
+        })
+        .catch(err => {
+          console.error('DEBUG [DB Products Error]:', err)
+        })
+    })
   }, [])
 
   const rowSelection = {
@@ -303,182 +329,206 @@ export default function AccountPage() {
   )
 
   return (
-  <>
-    <div
-      className="account-page"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 20,
-        width: '100%',
-        minWidth: 0, 
-        overflow: 'hidden', 
-      }}
-    >
-      <Alert
-        title="Your tenant has enabled the allow list, which is preventing notifications from being sent to users."
-        type="info"
-        showIcon
-      />
-
-      <Tabs
-        defaultActiveKey="users"
-        items={[
-          { key: 'users', label: 'User' },
-          { key: 'company', label: 'Company' },
-        ]}
-      />
-
+    <>
       <div
+        className="account-page"
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-
-          flexWrap: 'nowrap', 
-          gap: 12,
+          flexDirection: 'column',
+          gap: 20,
           width: '100%',
+          minWidth: 0,
+          overflow: 'hidden',
         }}
       >
-        {/* LEFT ACTIONS */}
-        <Space style={{ whiteSpace: 'nowrap' }}>
-          <Button
-            type="primary"
-            icon={<UsergroupAddOutlined />}
-            onClick={() => setIsAddUserDrawerOpen(true)}
-          >
-            Add Users/Groups
-          </Button>
+        <Alert
+          title="Your tenant has enabled the allow list, which is preventing notifications from being sent to users."
+          type="info"
+          showIcon
+        />
 
-          <Button icon={<DownloadOutlined />}>Export</Button>
-          <Button icon={<UploadOutlined />}>Import</Button>
-          <Button>Manage Admin Roles</Button>
-
-          {selectedRowKeys.length > 0 && (
-            <>
-              <Button onClick={() => setIsActivateModalOpen(true)}>
-                Activate
-              </Button>
-
-              <Button danger onClick={() => setIsDeactivateModalOpen(true)}>
-                Deactivate
-              </Button>
-
-              <Button danger onClick={() => setIsDeleteModalOpen(true)}>
-                Delete
-              </Button>
-            </>
-          )}
-        </Space>
+        <Tabs
+          defaultActiveKey="users"
+          items={[
+            { key: 'users', label: 'User' },
+            { key: 'company', label: 'Company' },
+          ]}
+        />
 
         <div
           style={{
             display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            gap: 8,
-            whiteSpace: 'nowrap',
-            position: 'relative',
+
+            flexWrap: 'nowrap',
+            gap: 12,
+            width: '100%',
           }}
         >
-          <Button type="text" icon={<EllipsisOutlined />} />
-          <Button
-            type="text"
-            icon={<SettingFilled />}
-            onClick={() => setIsColumnSettingsOpen(!isColumnSettingsOpen)}
-          />
+          {/* LEFT ACTIONS */}
+          <Space style={{ whiteSpace: 'nowrap' }}>
+            <Button
+              type="primary"
+              icon={<UsergroupAddOutlined />}
+              onClick={() => setIsAddUserDrawerOpen(true)}
+            >
+              Add Users/Groups
+            </Button>
 
-          {isColumnSettingsOpen && (
-            <div style={{ position: 'absolute', left: 0, top: 40, zIndex: 1000 }}>
-              <ColumnSettingsPopup
-                value={selectedColumns}
-                onChange={setSelectedColumns}
-                onClose={() => setIsColumnSettingsOpen(false)}
-              />
-            </div>
-          )}
+            <Button icon={<DownloadOutlined />}>Export</Button>
+            <Button icon={<UploadOutlined />}>Import</Button>
+            <Button>Manage Admin Roles</Button>
 
-          <Button
-            type="text"
-            icon={<FilterFilled />}
-            onClick={() => setIsFilterDrawerOpen(true)}
-          />
+            {selectedRowKeys.length > 0 && (
+              <>
+                <Button onClick={() => setIsActivateModalOpen(true)}>
+                  Activate
+                </Button>
 
-          <Input
-            allowClear
-            style={{ width: 320, flexShrink: 0 }} 
-            placeholder="Search by display name, user ID..."
-            prefix={<SearchOutlined />}
-            value={searchValue}
-            onChange={(e) => handleSearch(e.target.value)}
+                <Button danger onClick={() => setIsDeactivateModalOpen(true)}>
+                  Deactivate
+                </Button>
+
+                <Button danger onClick={() => setIsDeleteModalOpen(true)}>
+                  Delete
+                </Button>
+
+                {/* Assign Products — only for a single Tenant User selection */}
+                {selectedRowKeys.length === 1 && (() => {
+                  const raw = rawUsers.find((u) => u.id === selectedRowKeys[0])
+                  return raw?.role === 0 ? (
+                    <Button
+                      type="primary"
+                      ghost
+                      onClick={() => setIsAssignProductsOpen(true)}
+                    >
+                      Assign Products
+                    </Button>
+                  ) : null
+                })()}
+              </>
+            )}
+          </Space>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              whiteSpace: 'nowrap',
+              position: 'relative',
+            }}
+          >
+            <Button type="text" icon={<EllipsisOutlined />} />
+            <Button
+              type="text"
+              icon={<SettingFilled />}
+              onClick={() => setIsColumnSettingsOpen(!isColumnSettingsOpen)}
+            />
+
+            {isColumnSettingsOpen && (
+              <div style={{ position: 'absolute', left: 0, top: 40, zIndex: 1000 }}>
+                <ColumnSettingsPopup
+                  value={selectedColumns}
+                  onChange={setSelectedColumns}
+                  onClose={() => setIsColumnSettingsOpen(false)}
+                />
+              </div>
+            )}
+
+            <Button
+              type="text"
+              icon={<FilterFilled />}
+              onClick={() => setIsFilterDrawerOpen(true)}
+            />
+
+            <Input
+              allowClear
+              style={{ width: 320, flexShrink: 0 }}
+              placeholder="Search by display name, user ID..."
+              prefix={<SearchOutlined />}
+              value={searchValue}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: '100%',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+          }}
+        >
+          <Table
+            rowSelection={rowSelection}
+            columns={visibleColumns}
+            dataSource={data}
+            loading={loadingUsers}
+            locale={{ emptyText: usersError || 'No users found.' }}
+            pagination={{
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: pagination.total,
+              onChange: (page, pageSize) => {
+                loadUsers(filters, page, pageSize)
+              },
+              showSizeChanger: true,
+              pageSizeOptions: ['10', '20', '50', '100'],
+            }}
+            scroll={{ x: 1200 }}
           />
         </div>
       </div>
 
-      <div
-        style={{
-          width: '100%',
-          overflowX: 'auto', 
-          overflowY: 'hidden',
+      {/* DRAWERS */}
+      <AddUserDrawer
+        open={isAddUserDrawerOpen}
+        onClose={() => setIsAddUserDrawerOpen(false)}
+        onSuccess={() => {
+          // Reload table data starting from page 1 when a new user is added
+          loadUsers(filters, 1, pagination.pageSize)
         }}
-      >
-        <Table
-          rowSelection={rowSelection}
-          columns={visibleColumns}
-          dataSource={data}
-          loading={loadingUsers}
-          locale={{ emptyText: usersError || 'No users found.' }}
-          pagination={{
-            current: pagination.current,
-            pageSize: pagination.pageSize,
-            total: pagination.total,
-            onChange: (page, pageSize) => {
-              loadUsers(filters, page, pageSize)
-            },
-            showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50', '100'],
-          }}
-          scroll={{ x: 1200 }} 
-        />
-      </div>
-    </div>
+      />
 
-    {/* DRAWERS */}
-    <AddUserDrawer
-      open={isAddUserDrawerOpen}
-      onClose={() => setIsAddUserDrawerOpen(false)}
-      onSuccess={() => {
-        // Reload table data starting from page 1 when a new user is added
-        loadUsers(filters, 1, pagination.pageSize)
-      }}
-    />
+      <FilterDrawer
+        open={isFilterDrawerOpen}
+        onClose={() => setIsFilterDrawerOpen(false)}
+        onApplyFilter={handleApplyFilter}
+      />
 
-    <FilterDrawer
-      open={isFilterDrawerOpen}
-      onClose={() => setIsFilterDrawerOpen(false)}
-      onApplyFilter={handleApplyFilter}
-    />
+      {/* MODALS */}
+      <ActivateUsersModal
+        open={isActivateModalOpen}
+        onClose={() => setIsActivateModalOpen(false)}
+        selectedUserIds={selectedRowKeys}
+        onSuccess={handleDeactivateSuccess}
+      />
 
-    {/* MODALS */}
-    <ActivateUsersModal
-      open={isActivateModalOpen}
-      onClose={() => setIsActivateModalOpen(false)}
-      selectedUserIds={selectedRowKeys}
-      onSuccess={handleDeactivateSuccess}
-    />
+      <DeactivateUsersModal
+        open={isDeactivateModalOpen}
+        onClose={() => setIsDeactivateModalOpen(false)}
+        selectedUserIds={selectedRowKeys}
+        onSuccess={handleDeactivateSuccess}
+      />
 
-    <DeactivateUsersModal
-      open={isDeactivateModalOpen}
-      onClose={() => setIsDeactivateModalOpen(false)}
-      selectedUserIds={selectedRowKeys}
-      onSuccess={handleDeactivateSuccess}
-    />
+      <DeleteUsersModal
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        selectedUserIds={selectedRowKeys}
+        onSuccess={handleDeactivateSuccess}
+      />
 
-    <DeleteUsersModal
-      open={isDeleteModalOpen}
-      onClose={() => setIsDeleteModalOpen(false)}
-      selectedUserIds={selectedRowKeys}
-      onSuccess={handleDeactivateSuccess}
-    />
-  </>
-)
+      <AssignProductsDrawer
+        open={isAssignProductsOpen}
+        onClose={() => setIsAssignProductsOpen(false)}
+        onSuccess={() => {
+          setSelectedRowKeys([])
+          loadUsers(filters, pagination.current, pagination.pageSize)
+        }}
+        user={rawUsers.find((u) => u.id === selectedRowKeys[0]) ?? null}
+      />
+    </>
+  )
 }

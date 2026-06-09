@@ -1,4 +1,4 @@
-﻿using MyAOS.Domain.Dto;
+using MyAOS.Domain.Dto;
 using MyAOS.Domain.Entity;
 using MyAOS.Domain.Enum;
 using MyAOS.Repository;
@@ -887,7 +887,8 @@ namespace MyAOS.Service
                 StaffStudentId = user.StaffStudentId,
                 Sex = user.Sex,
                 MobilePhone = user.MobilePhone,
-                MfaEnabled = user.MfaEnabled
+                MfaEnabled = user.MfaEnabled,
+                ProductIds = user.UserProducts?.Select(up => up.ProductId).ToList() ?? new List<int>()
             };
         }
         private static bool IsAdminRole(string role)

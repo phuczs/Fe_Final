@@ -1,0 +1,53 @@
+.unauthorized-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 24px;
+  background-color: #fafafa;
+}
+
+.unauthorized-card {
+  max-width: 480px;
+  width: 100%;
+  padding: 40px 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  border: 1px solid #f0f0f0;
+}
+
+.unauthorized-icon-wrap {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  color: #ff4d4f;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.unauthorized-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0 0 8px 0;
+}
+
+.unauthorized-subtitle {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.unauthorized-btn {
+  min-width: 160px;
+  height: 40px;
+  font-weight: 500;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Avatar,
   Button,
@@ -20,6 +21,7 @@ import {
   MailOutlined,
   PhoneOutlined,
   IdcardOutlined,
+  ArrowLeftOutlined,
 } from '@ant-design/icons'
 import { usersApi } from '../../api/usersApi'
 import './ProfilePage.css'
@@ -27,6 +29,7 @@ import './ProfilePage.css'
 const { TabPane } = Tabs
 
 export default function ProfilePage() {
+  const navigate = useNavigate()
   const [profile, setProfile] = useState(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [editing, setEditing] = useState(false)
@@ -142,6 +145,17 @@ export default function ProfilePage() {
 
   return (
     <div className="profile-page">
+      {/* ── back button ───────────────────────────────────────────── */}
+      <div className="profile-back">
+        <Button
+          icon={<ArrowLeftOutlined />}
+          onClick={() => navigate(-1)}
+          className="profile-btn-back"
+        >
+          Back
+        </Button>
+      </div>
+
       {/* ── banner ───────────────────────────────────────────────────── */}
       <div className="profile-banner">
         <div className="profile-banner__avatar">

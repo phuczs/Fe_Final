@@ -1,9 +1,24 @@
 import { NavLink } from 'react-router-dom'
 import { navItems } from './navItems'
+import { jwtHelper } from '../../../utils/jwtHelper'
+import { tokenManager } from '../../../utils/tokenManager'
+
+import { isAdminRole } from '../../../routes/AdminRoute'
 
 import './Sidebar.css'
 
 export default function Sidebar() {
+  const token = tokenManager.getToken()
+  const role = jwtHelper.getUserRole(token)
+  const isAdmin = isAdminRole(role)
+
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.adminOnly && !isAdmin) {
+      return false
+    }
+    return true
+  })
+
   return (
     <aside className="sidebar">
       <div className="sidebar__logo">
@@ -11,7 +26,7 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar__nav">
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}

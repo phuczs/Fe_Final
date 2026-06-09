@@ -1,0 +1,172 @@
+/* Popover styling */
+.ant-popover-container,
+#_r_0_ {
+  width: 360px !important;
+}
+
+.notification-popover .ant-popover-inner {
+  padding: 0;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.notification-popover-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 420px;
+}
+
+/* Header styling */
+.notification-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.notification-header .ant-typography {
+  font-size: 15px;
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+.notification-header .ant-btn-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0969da;
+  padding: 0;
+  height: auto;
+}
+
+.notification-header .ant-btn-link:hover {
+  color: #054da7;
+}
+
+/* Container list */
+.notification-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.notification-loading {
+  padding: 32px 0;
+  text-align: center;
+}
+
+/* Items */
+.notification-item {
+  position: relative;
+  padding: 14px 18px 14px 28px !important; /* Left padding makes room for the dot */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f0f0f0 !important;
+  background-color: #ffffff;
+}
+
+.notification-item:hover {
+  background-color: #f6f8fa;
+}
+
+/* Unread indicator dot */
+.notification-item.unread::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #0969da; /* Sleek brand blue dot */
+}
+
+/* Unread background tint */
+.notification-item.unread {
+  background-color: #fcfdfe; /* Faint blue-tinted background */
+}
+
+.notification-item.unread:hover {
+  background-color: #f3f7fa;
+}
+
+/* Typography styles */
+.notification-item .ant-list-item-meta-title {
+  margin-bottom: 4px;
+}
+
+.notification-item .ant-list-item-meta-title .ant-typography {
+  font-size: 14px;
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+.notification-item:not(.unread) .ant-list-item-meta-title .ant-typography {
+  color: #57606a; /* Lighter color for read subjects */
+  font-weight: 400;
+}
+
+.notification-body {
+  color: #57606a;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notification-time {
+  color: #8c959f;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* Action check button */
+.notification-item .ant-list-item-action {
+  margin-inline-start: 12px;
+}
+
+.notification-item .ant-btn-text {
+  color: #57606a;
+  transition: all 0.2s ease;
+}
+
+.notification-item .ant-btn-text:hover {
+  color: #0969da;
+  background-color: #eaeef2;
+}
+
+/* Badge and Trigger Button styling */
+.notification-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: #57606a;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.notification-btn:hover {
+  background-color: #f6f8fa;
+  color: #24292f;
+  border-color: #d0d7de;
+}
+
+.notification-popover .ant-popover-arrow {
+  display: none !important; /* Clean design without the popover arrow */
+}

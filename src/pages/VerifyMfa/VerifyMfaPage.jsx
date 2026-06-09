@@ -1,6 +1,8 @@
-import { Typography } from 'antd'
+import { useState } from 'react'
+import { Typography, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-
+import { authApi } from '../../api/authApi'
+import { tokenManager } from '../../utils/tokenManager'
 import VerifyMfaForm from './components/VerifyMfaForm'
 
 import '../../components/auth/AuthPages.css'
@@ -8,11 +10,47 @@ import './VerifyMfaPage.css'
 
 export default function VerifyMfaPage() {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleVerify = (code) => {
-    console.log('Verify MFA:', code)
+  const handleVerify = async (code) => {
+    setLoading(true)
+    setError('')
 
-    navigate('/home')
+    const tempToken = sessionStorage.getItem('tempToken')
+    if (!tempToken) {
+      setError('MFA session expired. Please sign in again.')
+      message.error('MFA session expired. Please sign in again.')
+      setLoading(false)
+      navigate('/signin', { replace: true })
+      return
+    }
+
+    try {
+      const response = await authApi.verifyMfa({
+        tempToken,
+        code,
+      })
+
+      const accessToken = response.data?.accessToken
+
+      if (accessToken) {
+        tokenManager.setToken(accessToken)
+        sessionStorage.removeItem('tempToken')
+        message.success('Multi-factor authentication successful!')
+        navigate('/home', { replace: true })
+      } else {
+        setError('Verification failed. Invalid response.')
+      }
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.title ||
+        'Invalid or expired verification code. Please try again.'
+      setError(msg)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,6 +89,8 @@ export default function VerifyMfaPage() {
 
           <VerifyMfaForm
             onSubmit={handleVerify}
+            loading={loading}
+            error={error}
           />
 
           <Typography.Paragraph className="auth-card__footer">

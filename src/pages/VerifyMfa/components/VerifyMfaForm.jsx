@@ -12,11 +12,11 @@ import { useEffect, useState } from 'react'
 
 export default function VerifyMfaForm({
   onSubmit,
+  loading,
+  error,
 }) {
   const [seconds, setSeconds] =
     useState(180)
-
-  const [error] = useState('')
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -102,6 +102,7 @@ export default function VerifyMfaForm({
           htmlType="submit"
           size="large"
           block
+          loading={loading}
         >
           Verify
         </Button>

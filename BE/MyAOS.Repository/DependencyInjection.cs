@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +18,9 @@ namespace MyAOS.Repository
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserProductRepository, UserProductRepository>();
+            services.AddScoped<IFavouriteProductRepository, FavouriteProductRepository>();
             services.AddScoped<IRegistrationVerificationCodeRepository, RegistrationVerificationCodeRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             
             services.AddScoped<ITenantRepository, TenantRepository>();
 

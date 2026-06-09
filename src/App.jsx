@@ -15,9 +15,11 @@ import TwoFactorAuthenticationPage from './pages/Settings/TwoFactorAuthenticatio
 import EmailWhitelistPage from './pages/Settings/EmailWhitelist/EmailWhitelistPage'
 import VerifyMfaPage from './pages/VerifyMfa/VerifyMfaPage'
 import ProtectedRoute from './routes/ProtectedRoute'
-
+import AdminRoute from './routes/AdminRoute'
 
 import HomeLayout from './layout/HomeLayout'
+import SendNotificationPage from './pages/Notifications/SendNotificationPage'
+import UnauthorizedPage from './pages/Unauthorized/UnauthorizedPage'
 
 function App() {
   // useEffect(() => {
@@ -75,12 +77,20 @@ function App() {
 
         <Route
           path="/account"
-          element={<AccountPage />}
+          element={
+            <AdminRoute>
+              <AccountPage />
+            </AdminRoute>
+          }
         />
 
         <Route
           path="/reports/user-activity"
-          element={<UserActivityReportPage />}
+          element={
+            <AdminRoute>
+              <UserActivityReportPage />
+            </AdminRoute>
+          }
         />
 
         <Route
@@ -90,12 +100,30 @@ function App() {
 
         <Route
           path="/settings/email-whitelist"
-          element={<EmailWhitelistPage />}
+          element={
+            <AdminRoute>
+              <EmailWhitelistPage />
+            </AdminRoute>
+          }
         />
 
         <Route
           path="/profile"
           element={<ProfilePage />}
+        />
+
+        <Route
+          path="/admin/send-notification"
+          element={
+            <AdminRoute>
+              <SendNotificationPage />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/unauthorized"
+          element={<UnauthorizedPage />}
         />
       </Route>
 

@@ -36,4 +36,9 @@ export const usersApi = {
   resetPassword(payload) {
     return api.post('/api/users/me/reset-password', payload)
   },
+
+  // PUT /api/users/{id}/products — assign products to a specific user
+  assignProducts(userId, payload) {
+    return api.put(`/api/users/${userId}/products`, payload)
+  },
 }

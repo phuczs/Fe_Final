@@ -6,46 +6,16 @@ import {
   Space,
   TreeSelect,
   message,
-  Modal,      
-  Typography  
+  Modal,
+  Typography
 } from 'antd'
 
 import BaseDrawer from '../../../../components/common/BaseDrawer'
 import { usersApi } from '../../../../api/usersApi'
+import { PRODUCT_KEY_TO_ID, PRODUCT_TREE_DATA } from '../../../../constants/products'
 
-const { Paragraph } = Typography 
+const { Paragraph } = Typography
 
-// BẢNG QUY ĐỔI TỪ CHỮ SANG SỐ NGUYÊN
-const PRODUCT_ID_MAP = {
-  'curricula-student': 1,
-  'curricula-staff': 2,
-  'vitae-student': 3,
-  'vitae-staff': 4,
-  'vitae-trainer': 5
-}
-
-// TreeData mặc định để hiển thị Giao diện
-const productTreeData = [
-  {
-    title: 'Curricula for Training',
-    value: 'curricula',
-    key: 'curricula',
-    children: [
-      { title: 'Student', value: 'curricula-student', key: 'curricula-student' },
-      { title: 'Staff', value: 'curricula-staff', key: 'curricula-staff' },
-    ],
-  },
-  {
-    title: 'Vitae',
-    value: 'vitae',
-    key: 'vitae',
-    children: [
-      { title: 'Student', value: 'vitae-student', key: 'vitae-student' },
-      { title: 'Staff', value: 'vitae-staff', key: 'vitae-staff' },
-      { title: 'Trainer', value: 'vitae-trainer', key: 'vitae-trainer' },
-    ],
-  },
-]
 
 export default function AddUserDrawer({ open, onClose, onSuccess }) {
   const [form] = Form.useForm()
@@ -61,7 +31,7 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
 
       rawProducts.forEach(val => {
         if (val === 'curricula' || val === 'vitae') return
-        const mappedId = PRODUCT_ID_MAP[val]
+        const mappedId = PRODUCT_KEY_TO_ID[val]
         if (mappedId !== undefined) {
           safeProductIds.push(mappedId)
         }
@@ -72,14 +42,14 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
         users: [
           {
             userId: values.userId || "",
-            emailAddress: values.email || "", 
+            emailAddress: values.email || "",
             displayName: values.displayName || "",
-            staffStudentId: values.staffId || "", 
+            staffStudentId: values.staffId || "",
             sex: values.sex === 'female' ? 'Female' : 'Male',
             mobilePhone: values.mobilePhone || "",
             role: values.role === 'tenant-admin' ? 1 : 0,
             signInMethod: values.signInMethod === 'singpass' ? 1 : 0,
-            productIds: safeProductIds, 
+            productIds: safeProductIds,
           }
         ]
       }
@@ -101,22 +71,22 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
               The user has been created. Please copy the temporary password below and send it to the user.
               <strong> It will not be shown again.</strong>
             </p>
-            
-            <div style={{ 
-              marginTop: 16, 
-              padding: '12px', 
-              background: '#f5f5f5', 
+
+            <div style={{
+              marginTop: 16,
+              padding: '12px',
+              background: '#f5f5f5',
               borderRadius: '8px',
               border: '1px solid #d9d9d9',
               textAlign: 'center'
             }}>
-              <Paragraph 
-                copyable={{ tooltips: ['Copy', 'Copied!'] }} 
-                style={{ 
-                  margin: 0, 
-                  fontSize: '18px', 
-                  fontWeight: 'bold', 
-                  color: '#1677ff' 
+              <Paragraph
+                copyable={{ tooltips: ['Copy', 'Copied!'] }}
+                style={{
+                  margin: 0,
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  color: '#1677ff'
                 }}
               >
                 {tempPassword}
@@ -131,10 +101,10 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
           onClose()
         }
       })
-      
+
     } catch (error) {
       const errorData = error.response?.data
-      
+
       if (errorData?.errors && typeof errorData.errors === 'object') {
         const errorMessages = Object.values(errorData.errors).flat()
         message.error(`Validation Error: ${errorMessages.join(', ')}`)
@@ -143,7 +113,7 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
           errorData?.message ||
           errorData?.title ||
           'Unable to create user at this time.'
-          
+
         message.error(errorMessage)
       }
     } finally {
@@ -198,7 +168,7 @@ export default function AddUserDrawer({ open, onClose, onSuccess }) {
           rules={[{ required: true, message: 'Please select a product' }]}
         >
           <TreeSelect
-            treeData={productTreeData}
+            treeData={PRODUCT_TREE_DATA}
             treeCheckable
             showCheckedStrategy={TreeSelect.SHOW_PARENT}
             placeholder="Select products"

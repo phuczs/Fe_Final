@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyAOS.Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,15 @@ namespace MyAOS.Repository
     {
         public ProductRepository(AppDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<List<ProductEntity>> GetAllActiveAsync(CancellationToken ct = default)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(p => p.IsActive)
+                .OrderBy(p => p.SortOrder)
+                .ToListAsync(ct);
         }
 
         public async Task<List<ProductEntity>> GetActiveByIdsAsync(

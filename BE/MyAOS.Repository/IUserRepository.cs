@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyAOS.Domain.Dto;
 using MyAOS.Domain.Entity;
 using MyAOS.Domain.Enum;
@@ -27,12 +27,22 @@ namespace MyAOS.Repository
     Guid tenantId,
     Guid userId,
     CancellationToken ct = default);
+        Task<List<string>> GetAllEmailsAsync(Guid tenantId, CancellationToken ct = default);
 
     }
 
     public class UserRepository : DatabaseRepositoryBase<UserEntity>, IUserRepository
     {
         public UserRepository(AppDbContext context) : base(context) { }
+
+        public async Task<List<string>> GetAllEmailsAsync(Guid tenantId, CancellationToken ct = default)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(u => u.TenantId == tenantId)
+                .Select(u => u.Email)
+                .ToListAsync(ct);
+        }
 
         public async Task<UserEntity?> GetByEmailAsync(Guid tenantId, string email, CancellationToken ct = default)
         {
@@ -49,6 +59,7 @@ namespace MyAOS.Repository
     CancellationToken ct = default)
         {
             return await _dbSet
+                .Include(u => u.UserProducts)
                 .FirstOrDefaultAsync(u => u.TenantId == tenantId && u.Id == userId, ct);
         }
 

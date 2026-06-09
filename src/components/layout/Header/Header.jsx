@@ -5,6 +5,7 @@ import { authApi } from '../../../api/authApi'
 import { tokenManager } from '../../../utils/tokenManager'
 
 import MyProfileDrawer from '../../../pages/Home/drawers/MyProfileDrawer'
+import NotificationBell from './NotificationBell'
 
 import './Header.css'
 
@@ -49,9 +50,7 @@ export default function Header() {
         </div>
 
         <div className="header__right">
-          <button className="header__icon">
-            🔔
-          </button>
+          <NotificationBell />
 
           <button className="header__icon">
             ❔

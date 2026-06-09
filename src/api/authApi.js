@@ -44,7 +44,14 @@ export const authApi = {
 
   verifyMfa(payload) {
     return api.post(
-      '/api/auth/verify-mfa',
+      '/api/auth/mfa/verify',
+      payload,
+    )
+  },
+
+  toggleMyMfa(payload) {
+    return api.patch(
+      '/api/auth/me/mfa',
       payload,
     )
   },

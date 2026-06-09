@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyAOS.Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,8 @@ namespace MyAOS.Repository
         public DbSet<MfaCodeEntity> MfaCodes => Set<MfaCodeEntity>();
         public DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
         public DbSet<RegistrationVerificationCodeEntity> RegistrationVerificationCodes => Set<RegistrationVerificationCodeEntity>();
-
+        public DbSet<NotificationEntity> Notifications => Set<NotificationEntity>();
+        public DbSet<UserNotificationStateEntity> UserNotificationStates => Set<UserNotificationStateEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

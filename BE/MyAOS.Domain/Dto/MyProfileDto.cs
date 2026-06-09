@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,5 +23,7 @@ namespace MyAOS.Domain.Dto
         public string? MobilePhone { get; set; }
 
         public bool MfaEnabled { get; set; }
+
+        public List<int> ProductIds { get; set; } = new();
     }
 }
